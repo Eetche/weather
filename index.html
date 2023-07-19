@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+</head>
+<body>
+    <div class="container">
+        <div class="alert-warning">
+            <span class="alert-text"></span>
+        </div>
+        <div class="search-cont">
+            <input type="text" id="search_inp" placeholder="Enter your location">
+            <input type="button" value="Search" id="search">
+        </div>
+        <div class="weather-data">
+            <span>
+                <img src="/svg/freezy_icon.svg" alt="image.png" width="75" height="75" class="svg" id="freeze">
+                <img src="/svg/heat_icon.svg" alt="image.png" width="75" height="75" class="svg" id="heat">
+            </span>
+            <span id="temp">0 C</span>
+            <span id="wind_icon">
+                <img src="/svg/windy.svg" alt="image.png" width="75" height="75" class="svg">
+            </span>
+            <span id="wind">0 m/s</span>
+            <span id="humid_icon">
+                <img src="/svg/humid.svg" alt="image.png" width="75" height="75" class="svg">
+            </span>
+            <span id="humid">0 %</span>
+        </div>
+    </div>
+    <script src="./app.js"></script>
+</body>
+</html>
