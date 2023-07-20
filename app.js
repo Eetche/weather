@@ -1,53 +1,101 @@
-const searchInp = document.getElementById("search_inp")
-const search = document.getElementById("search")
+const searchInp = document.getElementById("search_inp");
+const search = document.getElementById("search");
 
-const heatIcon = document.getElementById("heat")
-const freezeIcon = document.getElementById("freeze")
+const heatIcon = document.getElementById("heat");
+const freezeIcon = document.getElementById("freeze");
 
-const tempSpan = document.getElementById("temp")
-const windSpan = document.getElementById("wind")
-const humidSpan = document.getElementById("humid")
+const tempSpan = document.getElementById("temp");
+const windSpan = document.getElementById("wind");
+const humidSpan = document.getElementById("humid");
+const weatherSpan = document.getElementById("weather");
 
-const alertText = document.querySelector(".alert-text")
-const alertWarning = document.querySelector(".alert-warning")
+const alertText = document.querySelector(".alert-text");
+const alertWarning = document.querySelector(".alert-warning");
 
-search.addEventListener('click', () => {
-    const APIKey = "your API key"
-    const city = searchInp.value;
+const cloudsI = document.getElementById("clouds");
+const rainI = document.getElementById("rain");
+const thunderI = document.getElementById("thunder");
+const snowI = document.getElementById("snow");
 
-    if (city === '')
-        return;
+search.addEventListener("click", () => {
+  const APIKey = "";
+  const city = searchInp.value;
 
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${APIKey}`)
-        .then(response => response.json())
-        .then(json => {
-            if (json.cod == "404") {
-                alertText.textContent = city + " is not defined"
-                alertWarning.style.top = "0px"
+  if (city === "") return;
 
-                setTimeout(() => {
-                    alertWarning.style.top = "-75px"
-                }, 1000)
+  fetch(
+    `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${APIKey}`
+  )
+    .then((response) => response.json())
+    .then((json) => {
+      if (json.cod == "404") {
+        alertText.textContent = city + " is not defined";
+        alertWarning.style.top = "0px";
 
-                console.log(city + " is not defined")
-            } else {
-                const temp = Math.floor(json.main.temp);
-                const windy = (json.wind.speed < 1) ? json.wind.speed : Math.floor(json.wind.speed);
-                const humid = json.main.humidity
+        setTimeout(() => {
+          alertWarning.style.top = "-75px";
+        }, 1000);
 
-                if (temp > 0) {
-                    freezeIcon.style.display = "none"
-                    heatIcon.style.display = "block"
-                } else {
-                    heatIcon.style.display = "none"
-                    freezeIcon.style.display = "block"
-                }
+        console.log(city + " is not defined");
+      } else {
+        const temp = Math.floor(json.main.temp);
+        const windy =
+          json.wind.speed < 1 ? json.wind.speed : Math.floor(json.wind.speed);
+        const humid = json.main.humidity;
+        const weather = json.weather[0].main;
+        const weatherDesc = json.weather[0].description;
 
-                tempSpan.textContent = temp + " C";
-                windSpan.textContent = windy + " m/s"
-                humidSpan.textContent = humid + "%"
-            }
-        })
+        if (temp > 0) {
+          freezeIcon.style.display = "none";
+          heatIcon.style.display = "block";
+        } else {
+          heatIcon.style.display = "none";
+          freezeIcon.style.display = "block";
+        }
 
+        console.log(weather);
 
-})
+        switch (weather) {
+          case "Clouds":
+            thunderI.style.display = "none";
+            rainI.style.display = "none";
+            snowI.style.display = "none";
+            cloudsI.style.display = "block";
+
+            break;
+          case "Rain":
+            thunderI.style.display = "none";
+            cloudsI.style.display = "none";
+            snowI.style.display = "none";
+            rainI.style.display = "block";
+
+            break;
+
+          case "Thunderstorm":
+            cloudsI.style.display = "none";
+            rainI.stylel.display = "none";
+            snowI.style.display = "none";
+            thunderI.style.display = "block";
+
+            break;
+
+          case "Snow":
+            cloudsI.style.display = "none";
+            rainI.style.display = "none";
+            thunderI.style.display = "none";
+            snowI.style.display = "block";
+
+          default:
+            rainI.style.display = "none";
+            thunderI.style.display = "none";
+            snowI.style.display = "none";
+            cloudsI.style.display = "block";
+        }
+
+        tempSpan.textContent = temp + " C";
+        windSpan.textContent = windy + " m/s";
+        humidSpan.textContent = humid + "%";
+        weatherSpan.textContent = weatherDesc;
+      }
+    });
+});
